@@ -1,0 +1,145 @@
+/* Footer Info Icons and Alignment */
+.footer-info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  color: #b3c7e6;
+  font-size: 14px;
+}
+.footer-info-icon {
+  color: #3a8dde;
+  min-width: 18px;
+  min-height: 18px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.footer-info-item a {
+  color: #3a8dde;
+  text-decoration: none;
+  margin: 0 2px;
+  transition: color 0.2s;
+}
+.footer-info-item a:hover {
+  color: #fff;
+}
+.footer {
+  background: #0b2439;
+  color: #fff;
+  padding: 60px 20px 30px;
+}
+
+/* CTA */
+.footer-cta {
+  max-width: 1100px;
+  margin: 0 auto 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-cta p {
+  max-width: 700px;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.footer-btn {
+  background: #fff;
+  color: #0b2439;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* GRID */
+.footer-grid {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 40px;
+}
+
+/* BRAND */
+.footer-brand img {
+  width: 180px;
+  margin-bottom: 20px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-socials a {
+  background: #fff;
+  color: #0b2439;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* COLUMNS */
+.footer-column h4 {
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.footer-column a {
+  display: block;
+  color: #b3c7e6;
+  margin-bottom: 8px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-column a:hover {
+  color: #3a8dde;
+}
+
+.footer-muted {
+  color: #b3c7e6;
+  font-size: 13px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* BOTTOM */
+.footer-bottom {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.footer-bottom a {
+  color: #d6dce5;
+  text-decoration: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .footer-cta {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}

@@ -1,0 +1,120 @@
+import { useState, useRef, useEffect, useCallback } from "react";
+import "./Services.css";
+
+const SERVICES = [
+  {
+    id: 1,
+    title: "Backfill Sourcing / Land Sourcing",
+    description:
+      "Professional sourcing and acquisition of backfill and land assets to support construction and development projects.",
+    image: "https://goo.su/llqk",
+  },
+  {
+    id: 2,
+    title: "Equipment Leasing",
+    description:
+      "Flexible equipment leasing solutions tailored to meet project requirements and operational demands.",
+    image: "https://goo.su/ZK5Ae",
+  },
+  {
+    id: 3,
+    title: "Site Management",
+    description:
+      "End-to-end site supervision ensuring safety compliance, efficiency, and timely project execution.",
+    image: "https://goo.su/TZMWa",
+  },
+  {
+    id: 4,
+    title: "Land Development",
+    description:
+      "Strategic land development services from planning to execution, aligned with regulatory standards.",
+    image: "https://goo.su/Jcy5r",
+  },
+  {
+    id: 5,
+    title: "Project Management Consultation",
+    description:
+      "Expert consultation to optimize project workflows, timelines, and stakeholder coordination.",
+    image: "https://tinyurl.com/234a5koy",
+  },
+];
+
+const Services = () => {
+  const [activeServiceId, setActiveServiceId] = useState(null);
+  const activeCardRef = useRef(null);
+
+  const handleOutsideClick = useCallback((event) => {
+    if (
+      activeCardRef.current &&
+      !activeCardRef.current.contains(event.target)
+    ) {
+      setActiveServiceId(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeServiceId !== null) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [activeServiceId, handleOutsideClick]);
+
+  const handleCardClick = (id) => {
+    setActiveServiceId((prev) => (prev === id ? null : id));
+  };
+
+  return (
+    <section id="services" className="services" aria-labelledby="services-heading">
+      <div className="container">
+        <h2 id="services-heading" className="services-title">
+          Services Provided by Cliberduche Corporation
+        </h2>
+
+        <div
+          className={`service-grid ${
+            activeServiceId !== null ? "has-active" : ""
+          }`}
+        >
+          {SERVICES.map((service, index) => {
+            const isActive = activeServiceId === service.id;
+
+            return (
+              <article
+                key={service.id}
+                ref={isActive ? activeCardRef : null}
+                className={`service-card card-${index + 1} ${
+                  isActive ? "active" : ""
+                }`}
+                onClick={() => handleCardClick(service.id)}
+                role="button"
+                tabIndex={0}
+                aria-pressed={isActive}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    handleCardClick(service.id);
+                  }
+                }}
+              >
+                <div className="service-image">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    loading="lazy"
+                  />
+                </div>
+
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Services;
