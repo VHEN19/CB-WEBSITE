@@ -1,98 +1,111 @@
-import "./styles/Footer.css";
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaLinkedin, FaFacebookF } from "react-icons/fa";
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import CompanyLogo from "./assets/CompanyLogo.png";
+import "./styles/Footer.css";
+
+import { companyLinks, industriesLinks, servicesLinks, contactInfo } from "./components/footerData";
+import { socials } from "./components/socialData";
 
 const Footer = () => {
   return (
-    <footer className="footer">
-      {/* Top CTA */}
-      <div className="footer-cta">
-        <p>
-          Professional surveying, engineering, and construction services are
-          only offered and performed in states where we are licensed.
-        </p>
-        <a href="#contact" className="footer-btn">Contact Us</a>
+    <footer className="ft-root">
+
+      {/* CTA Banner */}
+      <div className="ft-cta">
+        <div className="ft-cta-text">
+          <p className="ft-cta-label">Ready to Build?</p>
+          <h2 className="ft-cta-heading">Let's Work Together</h2>
+          <p className="ft-cta-sub">
+            Professional land development, backfill supply, and infrastructure services
+            — available across the Philippines by licensed teams.
+          </p>
+        </div>
+        <a href="#contact" className="ft-cta-btn">🏗️ &nbsp;Contact Us</a>
       </div>
 
-      {/* Main Footer Grid */}
-      <div className="footer-grid">
+      {/* Main Grid */}
+      <div className="ft-grid">
 
         {/* Brand */}
-        <div className="footer-brand">
-          <img
-            src={CompanyLogo}
-            alt="Company Logo"
-          />
-          <div className="footer-socials">
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-              <FaLinkedin size={18} />
-            </a>
-            <a href="https://www.facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
-              <FaFacebookF size={18} />
-            </a>
+        <div className="ft-brand">
+          <div className="ft-logo-wrap">
+            <div>
+              <img
+                src={CompanyLogo}
+                alt="Cliberduche Corporation"
+                className="ft-logo-img"
+                onError={(e) => { e.target.style.display = "none"; }}
+              />
+              <span className="ft-logo-text"><span>CLIBER</span>DUCHE</span>
+              <span className="ft-logo-tagline">Corporation · Est. 2018</span>
+            </div>
+          </div>
+          <p className="ft-brand-desc">
+            A Filipino-owned land development company committed to quality,
+            safety, and sustainable infrastructure across the Philippines.
+          </p>
+          <div className="ft-socials">
+            {socials.map((s, i) => (
+              <a key={i} href={s.href} target="_blank" rel="noreferrer" aria-label={s.label} className="ft-social-link">
+                <s.icon size={16} />
+              </a>
+            ))}
           </div>
         </div>
 
         {/* Company */}
-        <div className="footer-column">
+        <div className="ft-col">
           <h4>Company</h4>
-          <a href="#home">Home</a>
-          <a href="#about">About Us</a>
-          <a href="#services">Services</a>
-          <a href="#contact">Contact</a>
+          {companyLinks.map((link, i) => <a key={i} href={link.href}>{link.label}</a>)}
         </div>
 
-        {/* News */}
-        {/* <div className="footer-column">
-          <h4>News + Insights</h4>
-          <a href="/news">News</a>
-          <a href="/blogs">Blogs</a>
-          <a href="/brochures">Brochures</a>
-          <a href="/videos">Videos</a>
-        </div> */}
-
         {/* Industries */}
-        <div className="footer-column">
+        <div className="ft-col">
           <h4>Industries We Serve</h4>
-          {/* <a href="/energy">Energy + Chemicals</a>
-          <a href="/utilities">Power + Utilities</a>
-          <a href="/transition">Energy Transition</a>
-          <a href="/manufacturing">Manufacturing + Infrastructure</a> */}
+          {industriesLinks.map((link, i) => <a key={i} href={link.href}>{link.label}</a>)}
         </div>
 
         {/* Services */}
-        <div className="footer-column">
+        <div className="ft-col">
           <h4>Services We Offer</h4>
-          {/* <a href="/engineering">Engineering</a>
-          <a href="/procurement">Procurement</a>
-          <a href="/construction">Construction Services</a>
-          <a href="/automation">Automation + Controls</a>
-          <a href="/maintenance">Operations + Maintenance</a> */}
+          {servicesLinks.map((link, i) => <a key={i} href={link.href}>{link.label}</a>)}
         </div>
       </div>
 
+      <div className="ft-divider" />
+
       {/* Bottom Bar */}
-      <div className="footer-bottom">
-        <div className="footer-info">
-          <span className="footer-info-item">
-            <FaPhoneAlt className="footer-info-icon" />
-            <a href="tel:+63495466107">+63 49 546-6107</a> / <a href="tel:+639673026643">0967-302-6643</a>
+      <div className="ft-bottom">
+        <div className="ft-info">
+          <span className="ft-info-item">
+            <FaPhoneAlt className="ft-info-icon" />
+            <span>
+              {contactInfo.phone.map((p, i) => (
+                <a key={i} href={p.href}>{p.label}</a>
+              )).reduce((prev, curr) => [prev, " / ", curr])}
+            </span>
           </span>
-          <span className="footer-info-item">
-            <FaEnvelope className="footer-info-icon" />
-            <a href="mailto:cliberduche.corp@yahoo.com">cliberduche.corp@yahoo.com</a>
+          <span className="ft-info-item">
+            <FaEnvelope className="ft-info-icon" />
+            <a href={contactInfo.email.href}>{contactInfo.email.label}</a>
           </span>
-          <span className="footer-info-item">
-            <FaMapMarkerAlt className="footer-info-icon" />
-            Lot 3739 National Highway, 3/F CBD Building Brgy. Pulo, Cabuyao City, Laguna, Philippines
+          <span className="ft-info-item">
+            <FaMapMarkerAlt className="ft-info-icon" />
+            <span>{contactInfo.address}</span>
           </span>
         </div>
 
-        <div className="footer-copy">
-          <span>
-            © {new Date().getFullYear()} Cliberduche Corporation. All rights reserved.
-          </span>
-          <a href="/privacy">Privacy Policy</a>
+        <div className="ft-copy">
+          <div>
+            <p className="ft-copy-left">
+              © {new Date().getFullYear()} <strong>Cliberduche Corporation.</strong> All rights reserved.
+            </p>
+            <p className="ft-made">Built with <span>♦</span> in the Philippines</p>
+          </div>
+          <div className="ft-copy-right">
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Use</a>
+            <a href="/sitemap">Sitemap</a>
+          </div>
         </div>
       </div>
     </footer>

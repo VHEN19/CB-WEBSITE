@@ -1,124 +1,112 @@
-import { useState } from "react";
-import "./About.css";
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import "./Components/styles/About.css";
 
-const aboutData = [
-  {
-    title: "Our Mission",
-    content:
-      "CLIBERDUCHE CORPORATION is dedicated to responsible land development, providing high-quality backfill and sub-base materials for infrastructure and land development projects. We are committed to sustainable practices, strict compliance with Philippine environmental regulations, and delivering value to our communities, investors, employees, and stakeholders. Our company is proud to contribute to the national economy by creating employment opportunities for Filipinos.",
-  },
-  {
-    title: "Our Vision",
-    content:
-      "To be a highly respected, world-class land development company recognized for our commitment to international standards, environmental stewardship, and sustainable growth. We aim to transform land development sites into future commercial and residential projects, contributing to the long-term progress of the Philippines.",
-  },
-  {
-    title: "Core Values",
-    content:
-      "We uphold the highest standards of quality, safety, and integrity in all our operations.\n\n" +
-      "Quality: We ensure our projects meet or exceed local and national standards, delivering competitive value in the market.\n\n" +
-      "Safety: We prioritize the safety of our worksites, personnel, and communities, implementing best practices before, during, and after every project.\n\n" +
-      "Integrity: We comply with all relevant laws and regulations, maintain a reliable workforce, and deliver projects on time with honesty and transparency.",
-  },
-];
-
-const orgData = [
-  { role: "PRESIDENT/CEO", image: "/images/ceo.jpg" },
-  { role: "VICE PRESIDENT", image: "/images/vp.jpg" },
-  { role: "MARKETING MANAGER", image: "/images/mm.jpg" },
-  { role: "CHIEF OF SITE OPERATION", image: "/images/coso.jpg" },
-  { role: "PURCHASING HEAD", image: "/images/ph.jpg" },
-  { role: "HEAD-HR ADMIN/LEGAL", image: "/images/hhr.jpg" },
-  { role: "ACCOUNTING HEAD", image: "/images/ah.jpg" },
-  { role: "PROJECT MANAGER", image: "/images/pm.jpg" },
-  { role: "PURCHASING OFFICER", image: "/images/po.jpg" },
-  { role: "HR ADMIN OFFICER", image: "/images/hrao.jpg" },
-];
+import aboutData from "./Components/aboutData";
+import orgData from "./Components/orgData";
+import useInView from "./Components/useInView";
 
 const About = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [heroRef, heroInView] = useInView(0.1);
+  const [cardsRef, cardsInView] = useInView();
+  const [orgRef, orgInView] = useInView();
 
   return (
-    <section
-      id="about"
-      className="section about"
-      style={{
-        background: `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
-                     url("https://as1.ftcdn.net/v2/jpg/00/52/14/94/1000_F_52149432_4FhRgWtKJQFCM299StO3te3zwXF5KAfE.jpg")`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        color: "#fff",
-        padding: "80px 20px",
-      }}
-    >
-      <div className="container">
-        <h2>About Us</h2>
-
-        <p className="intro">
-          The Company was established in 2018, CLIBERDUCHE CORPORATION
-          was born out of the dream of a person to provide the best for his family without leaving the country anymore.
-          This person found this opportunity in the wide field of the construction business.
-          Immediately, he invited his friends to join him and officially registered CLIBERDUCHE CORPORATION was
-          registered with the Securities and Exchange Commission on as November 28, 2018.
-        </p>
-
-        <p>
-          CLIBERDUCHE stands for the surnames of the founder and co-founders of the Corporation ;
-        </p>
-        <p>CLImaco</p>
-        <p>BERonilla</p>
-        <p>PiaDUCHE</p>
-
-        {/* Separate Containers */}
-        <div className="about-cards">
-          {aboutData.map((item, index) => (
-            <div key={index} className="about-card">
-              <h3>{item.title}</h3>
-              <div className="about-card-content">
-                <p>{item.content}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Organization Carousel */}
-        <div className="org-section">
-          <h2 className="org-title">Our Organization</h2>
-
-          <div className="org-carousel-wrapper">
-            <button
-              className="org-btn"
-              onClick={() =>
-                setCurrentIndex(currentIndex === 0 ? orgData.length - 1 : currentIndex - 1)
-              }
-            >
-              ‹
-            </button>
-
-            <div className="org-carousel">
-              <div
-                className="org-track"
-                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-              >
-                {orgData.map((item, index) => (
-                  <div className="org-card" key={index}>
-                    <img src={item.image} alt={item.role} />
-                    <h4>{item.role}</h4>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <button
-              className="org-btn"
-              onClick={() =>
-                setCurrentIndex(currentIndex === orgData.length - 1 ? 0 : currentIndex + 1)
-              }
-            >
-              ›
-            </button>
+    <section id="about" className="ab-root">
+      {/* HERO */}
+      <div ref={heroRef} className={`ab-hero${heroInView ? " in-view" : ""}`}>
+        <div className="ab-hero-slash" />
+        <div className="ab-hero-bottom-fade" />
+        <div className="ab-hewro-inner">
+          <p className="ab-eyebrow">Est. 2018</p>
+          <h2 className="ab-hero-title">About <span>Us</span></h2>
+          <div className="ab-hero-divider" />
+          <p className="ab-hero-text">
+            Established in 2018, CLIBERDUCHE CORPORATION was born from the vision of building a better
+            future through responsible land development. Founded by individuals united by purpose, the
+            company continues to grow with integrity, innovation, and dedication to community progress.
+          </p>
+          <div className="ab-hero-badges">
+            <span>🏗️ Construction</span>
+            <span>🌿 Sustainable</span>
+            <span>🇵🇭 Filipino-Owned</span>
+            <span>📋 SEC Registered</span>
           </div>
         </div>
+      </div>
+
+      {/* Mission / Vision / Values */}
+      <div className="ab-shell">
+        <p className="ab-label">Who We Are</p>
+        <h2 className="ab-heading">Mission, Vision &amp; <em>Values</em></h2>
+        <div className="ab-rule" />
+        <div ref={cardsRef} className={`ab-cards${cardsInView ? " in-view" : ""}`}>
+          <div className="ab-cards-grid">
+            {aboutData.map((item, i) => (
+              <div key={i} className="ab-card" style={{ "--card-accent": item.accent }}>
+                <div className="ab-card-icon">{item.icon}</div>
+                <h3>{item.title}</h3>
+                <p>{item.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Leadership */}
+      <div className="ab-org-bg">
+        <div className="ab-shell" style={{ paddingTop: "80px" }}>
+          <p className="ab-label">Meet the Team</p>
+          <h2 className="ab-heading">Our <em>Leadership</em></h2>
+          <div className="ab-rule" />
+          <div ref={orgRef} className={`ab-org-section${orgInView ? " in-view" : ""}`}>
+            <div className="ab-org-grid">
+              {orgData.map((item, i) => (
+                <div className="ab-org-card" key={i}>
+                  <div className="ab-org-img-wrap">
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.role}
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          e.target.nextSibling.style.display = "flex";
+                        }}
+                      />
+                    ) : null}
+                    <div className="ab-org-avatar" style={{ display: item.image ? "none" : "flex" }}>
+                      {item.initial}
+                    </div>
+                    <div className="ab-org-img-overlay" />
+                  </div>
+                  <div className="ab-org-body">
+                    <div className="ab-org-role">{item.role}</div>
+                    <div className="ab-org-name">{item.name}</div>
+                    <div className="ab-org-dot" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Learn More */}
+      <div className="ab-learn-more">
+        {location.pathname !== "/aboutpage" && (
+          <button
+            className="ab-learn-btn"
+            onClick={() => {
+              navigate("/aboutpage");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
+            Explore More →
+          </button>
+        )}
       </div>
     </section>
   );

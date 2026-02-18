@@ -2,13 +2,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./Pages/Navbar/Navbar";
 import Home from "./Pages/Home/Home";
-import ServicesOverview from "./Pages/Services/servicesOverview";
+import ServicesOverview from "./Pages/Services/Services";
+import ServicePage from "./Pages/Services/components/ServicePage";
 import About from "./Pages/About/About";
 import Contact from "./Pages/Contact/Contact";
 import Projects from "./Pages/Projects/Projects";
-import ProjectsList from "./Pages/Projects/ProjectList";
+import ProjectDetails from "./Pages/Projects/ProjectDetails";
 import Footer from "./Pages/Footer/Footer";
-import Privacy from "./components/privacy";
+import Privacy from "./components/privacy"; 
+import AboutPage from "./Pages/About/AboutPage"; 
 
 
 function App() {
@@ -32,9 +34,13 @@ function App() {
         />
 
         {/* Projects List Page */}
-        <Route path="/projectlist" element={<ProjectsList />} />
+        
+        <Route path="/projectDetails" element={<ProjectDetails />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/services" element={<ServicesOverview />} />
+        <Route path="/aboutpage" element={<AboutPage />} />
+        <Route path="/servicepage" element={<ServicePage />} />
+        
       </Routes>
 
       <Footer />

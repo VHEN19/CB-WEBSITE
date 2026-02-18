@@ -1,139 +1,181 @@
-import { useState } from "react";
-import {  useLocation, useNavigate } from "react-router-dom";
-import "./Navbar.css";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./Navbar.css"; // Optional: if you want to separate CSS into its own file
 
+
+/* ─── MENU DATA ──────────────────────────────────────────── */
+const NAV_ITEMS = [
+  { label: "Home", section: "home" },
+  { label: "Services", section: "services" },
+  { label: "Projects", section: "projects" },
+  {
+    label: "About Us",
+    dropdown: [
+      { label: "Company", section: "about" },
+      { label: "Mission & Vision", section: "about" },
+      { label: "Organization Chart", section: "about" },
+    ],
+  },
+  {
+    label: "Contact",
+    dropdown: [
+      { label: "Email", section: "contact" },
+      { label: "Location", section: "contact" },
+    ],
+  },
+];
+
+/* ─── COMPONENT ─────────────────────────────────────────── */
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [aboutOpen, setAboutOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null); // label string
+  const [scrolled, setScrolled] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Helper to handle navigation and scroll
+  /* scroll detection */
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  /* close mobile menu on route change */
+  useEffect(() => {
+    setMenuOpen(false);
+    setOpenDropdown(null);
+  }, [location.pathname]);
+
+  /* scroll helper */
   const handleNav = (section) => {
     setMenuOpen(false);
+    setOpenDropdown(null);
     if (location.pathname !== "/") {
       navigate("/", { replace: false });
-      // Wait for navigation, then scroll
       setTimeout(() => {
-        const el = document.getElementById(section);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }, 100);
+        document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+      }, 120);
     } else {
-      const el = document.getElementById(section);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+      document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
+  const toggleMobileDropdown = (label) =>
+    setOpenDropdown((prev) => (prev === label ? null : label));
+
   return (
-    <nav className="navbar">
-      <div className="container navbar-container">
-        <h1 className="logo">CLIBERDUCHE</h1>
+    <>
+      
 
-        {/* Hamburger Toggle (Mobile/Tablet) */}
-        <div
-          className="nav-toggle"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle navigation menu"
-        >
-          {menuOpen ? "✕" : "☰"}
+      <nav className={`nb-root${scrolled ? " scrolled" : " at-top"}`}>
+        <div className="nb-container">
+
+          {/* ── LOGO ── */}
+          <div className="nb-logo" onClick={() => handleNav("home")} role="button" tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && handleNav("home")}>
+            <span className="nb-logo-main">
+              <span>CLIBER</span>DUCHE
+            </span>
+            <span className="nb-logo-sub">Corporation · Est. 2018</span>
+          </div>
+
+          {/* ── DESKTOP MENU ── */}
+          <ul className="nb-menu">
+            {NAV_ITEMS.map((item) =>
+              item.dropdown ? (
+                <li key={item.label} className="nb-dropdown-item">
+                  <button className="nb-btn">
+                    {item.label}
+                    <span className="nb-chevron">▾</span>
+                  </button>
+                  <ul className="nb-dropdown-menu">
+                    {item.dropdown.map((sub) => (
+                      <ul key={sub.label}>
+                        <button
+                          className="nb-dropdown-btn"
+                          onClick={() => handleNav(sub.section)}
+                        >
+                          <span className="nb-dropdown-dot" />
+                          {sub.label}
+                        </button>
+                      </ul>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
+                <li key={item.label}>
+                  <button className="nb-btn" onClick={() => handleNav(item.section)}>
+                    {item.label}
+                  </button>
+                </li>
+              )
+            )}
+
+           
+          </ul>
+
+          {/* ── HAMBURGER ── */}
+          <button
+            className={`nb-hamburger${menuOpen ? " is-open" : ""}`}
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
+          >
+            <span className="nb-bar" />
+            <span className="nb-bar" />
+            <span className="nb-bar" />
+          </button>
         </div>
+      </nav>
 
-        <ul className={`nav-menu ${menuOpen ? "open" : ""}`}>
-          <li>
-            <button className="nav-link-btn" onClick={() => handleNav("home")}>Home</button>
-          </li>
-          <li>
-            <button className="nav-link-btn" onClick={() => handleNav("services")}>Services</button>
-          </li>
-          {/* About Dropdown */}
-          <li className={`dropdown ${aboutOpen ? "open" : ""}`}>
+      {/* ── MOBILE SLIDE-IN MENU ── */}
+      <div className={`nb-mobile-menu${menuOpen ? " open" : ""}`} aria-hidden={!menuOpen}>
+        {NAV_ITEMS.map((item) =>
+          item.dropdown ? (
+            <div key={item.label}>
+              <button
+                className="nb-mobile-btn"
+                onClick={() => toggleMobileDropdown(item.label)}
+              >
+                {item.label}
+                <span style={{
+                  fontSize: "0.7rem",
+                  transition: "transform 0.25s",
+                  transform: openDropdown === item.label ? "rotate(180deg)" : "rotate(0deg)",
+                  color: openDropdown === item.label ? "#F59E0B" : "#475569"
+                }}>▾</span>
+              </button>
+              <div className={`nb-mobile-dropdown${openDropdown === item.label ? " open" : ""}`}>
+                {item.dropdown.map((sub) => (
+                  <button
+                    key={sub.label}
+                    className="nb-mobile-sub-btn"
+                    onClick={() => handleNav(sub.section)}
+                  >
+                    <span style={{
+                      width: 5, height: 5, borderRadius: "50%",
+                      background: "#F59E0B", flexShrink: 0,
+                      display: "inline-block"
+                    }} />
+                    {sub.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
             <button
-              className="nav-link-btn"
-              onClick={(e) => {
-                if (window.innerWidth <= 1024) {
-                  e.preventDefault();
-                  setAboutOpen(!aboutOpen);
-                } else {
-                  handleNav("about");
-                }
-              }}
+              key={item.label}
+              className="nb-mobile-btn"
+              onClick={() => handleNav(item.section)}
             >
-              About Us ▾
+              {item.label}
             </button>
-            <ul className="dropdown-menu">
-              <li>
-                <button
-                  className="nav-link-btn"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    setAboutOpen(false);
-                    handleNav("about");
-                  }}
-                >
-                  Company
-                </button>
-              </li>
-              <li>
-                <button
-                  className="nav-link-btn"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    setAboutOpen(false);
-                    handleNav("about");
-                  }}
-                >
-                  Mission & Vision
-                </button>
-              </li>
-            </ul>
-          </li>
-          {/* Contact Dropdown */}
-          <li className={`dropdown ${contactOpen ? "open" : ""}`}>
-            <button
-              className="nav-link-btn"
-              onClick={(e) => {
-                if (window.innerWidth <= 1024) {
-                  e.preventDefault();
-                  setContactOpen(!contactOpen);
-                } else {
-                  handleNav("contact");
-                }
-              }}
-            >
-              Contact ▾
-            </button>
-            <ul className="dropdown-menu">
-              <li>
-                <button
-                  className="nav-link-btn"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    setContactOpen(false);
-                    handleNav("contact");
-                  }}
-                >
-                  Email
-                </button>
-              </li>
-              <li>
-                <button
-                  className="nav-link-btn"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    setContactOpen(false);
-                    handleNav("contact");
-                  }}
-                >
-                  Location
-                </button>
-              </li>
-            </ul>
-          </li>
-        </ul>
+          )
+        )}
+
       </div>
-    </nav>
+    </>
   );
 };
 
